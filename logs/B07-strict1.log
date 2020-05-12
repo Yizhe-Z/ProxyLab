@@ -1,0 +1,270 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:29687
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/B07-strict1.cmd'
+># Test ability to handle combination of fetches and requests with
+># strictness level 1: Request and headers are properly formattted
+>option strict 1
+>serve s1 s2 s3
+Server s1 running at bambooshark.ics.cs.cmu.edu:16161
+Server s2 running at bambooshark.ics.cs.cmu.edu:29795
+Server s3 running at bambooshark.ics.cs.cmu.edu:8244
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+># A sequential proxy can handle this ordering
+># of requests, fetches, and responses.
+>request r1 random-text1.txt s2
+Client: Requesting '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:29795
+>fetch f1 random-text1.txt s1
+Client: Fetching '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:16161
+>request r2 random-text2.txt s3
+Client: Requesting '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:8244
+>fetch f2 random-text2.txt s2
+Client: Fetching '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:29795
+>request r3 random-text3.txt s1
+Client: Requesting '/random-text3.txt' from bambooshark.ics.cs.cmu.edu:16161
+>fetch f3 random-text3.txt s3
+Client: Fetching '/random-text3.txt' from bambooshark.ics.cs.cmu.edu:8244
+>request r4 random-text4.txt s1
+Client: Requesting '/random-text4.txt' from bambooshark.ics.cs.cmu.edu:16161
+>fetch f4 random-text4.txt s3
+Client: Fetching '/random-text4.txt' from bambooshark.ics.cs.cmu.edu:8244
+>request r5 random-text5.txt s3
+Client: Requesting '/random-text5.txt' from bambooshark.ics.cs.cmu.edu:8244
+>fetch f5 random-text5.txt s2
+Client: Fetching '/random-text5.txt' from bambooshark.ics.cs.cmu.edu:29795
+>request r6 random-text6.txt s2
+Client: Requesting '/random-text6.txt' from bambooshark.ics.cs.cmu.edu:29795
+>fetch f6 random-text6.txt s1
+Client: Fetching '/random-text6.txt' from bambooshark.ics.cs.cmu.edu:16161
+>wait r1
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:29795
+Proxy stderr: Request-ID: r1
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r1
+Server responded to request r1 with status ok
+>wait r1 f1 r2
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:16161
+Proxy stderr: Request-ID: f1
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8244
+Proxy stderr: Request-ID: r2
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 2174
+Proxy stderr: left_size: 1046402
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:29795
+Proxy stderr: Request-ID: f2
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text3.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8244
+Proxy stderr: Request-ID: f3
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text3.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:16161
+Proxy stderr: Request-ID: r3
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text4.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:16161
+Proxy stderr: Request-ID: r4
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 2174
+Proxy stderr: large_flag: 0, size: 4174
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text4.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8244
+Proxy stderr: Request-ID: f4
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: left_size: 1042228
+Proxy stderr: left_size: 1040054
+Proxy stderr: large_flag: 0, size: 6174
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text5.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8244
+Proxy stderr: Request-ID: r5
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+>check r1
+Proxy stderr: GET /random-text6.txt HTTP/1.0
+Request r1 yielded expected status 'ok'
+>trace r1
+== Trace of request r1 =========================================================
+Initial request by client had header:
+GET http://bambooshark.ics.cs.cmu.edu:29795/random-text1.txt HTTP/1.0\r\n
+Host: bambooshark.ics.cs.cmu.edu:29795\r\n
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:29795
+Request-ID: r1\r\n
+Response: Deferred\r\n
+Connection: close\r\n
+Proxy-Connection: close \r\n
+User-Agent: CMU/1.0 Iguana/20180704 PxyDrive/0.0.1\r\n
+Proxy stderr: Request-ID: r6
+\r\n
+--------------------------------------------------------------------------------
+Proxy stderr: Response: Deferred
+Message received by server had header:
+GET /random-text1.txt HTTP/1.0\r\n
+Host: bambooshark.ics.cs.cmu.edu:29795\r\n
+Request-ID: r1\r\n
+Response: Deferred\r\n
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1\r\n
+Connection: close\r\n
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy-Connection: close\r\n
+\r\n
+--------------------------------------------------------------------------------
+Proxy stderr: Connection: close
+Message sent by server had header:
+HTTP/1.0 200 OK\r\n
+Server: Proxylab driver\r\n
+Request-ID: r1\r\n
+Content-length: 2000\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s2-/random-text1.txt\r\n
+Sequence-Identifier: 1\r\n
+Proxy stderr: Proxy-Connection: close
+\r\n
+--------------------------------------------------------------------------------
+Message received by client had header:
+HTTP/1.0 200 OK
+Server: Proxylab driver\r\n
+Request-ID: r1\r\n
+Proxy stderr: 
+Content-length: 2000\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s2-/random-text1.txt\r\n
+Sequence-Identifier: 1\r\n
+Proxy stderr: zyzyz: -1
+\r\n
+--------------------------------------------------------------------------------
+Proxy stderr: GET /random-text5.txt HTTP/1.0
+Response status: ok
+  Source file in ./source_files/random/random-text1.txt
+Request status:  ok (OK)
+  Result file in ./response_files/r1-random-text1.txt
+>check f1
+Request f1 yielded expected status 'ok'
+>respond r2
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:29795
+Server responded to request r2 with status ok
+>wait r2 f2 r3
+Proxy stderr: Request-ID: f5
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: left_size: 1033880
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text6.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:16161
+Proxy stderr: Request-ID: f6
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 8174
+Proxy stderr: large_flag: 0, size: 4174
+Proxy stderr: left_size: 1025706
+Proxy stderr: left_size: 1021532
+Proxy stderr: large_flag: 0, size: 10175
+>check r2
+Request r2 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>respond r3
+Server responded to request r3 with status ok
+>wait r3 f3 r4
+Proxy stderr: left_size: 1011357
+Proxy stderr: large_flag: 0, size: 12175
+Proxy stderr: large_flag: 0, size: 6174
+Proxy stderr: left_size: 999182
+Proxy stderr: left_size: 993008
+>check r3
+Request r3 yielded expected status 'ok'
+>check f3
+Request f3 yielded expected status 'ok'
+>respond r4
+Server responded to request r4 with status ok
+>wait r4 f4 r5
+Proxy stderr: large_flag: 0, size: 8174
+Proxy stderr: left_size: 984834
+>check r4
+Request r4 yielded expected status 'ok'
+>check f4
+Request f4 yielded expected status 'ok'
+>respond r5
+Server responded to request r5 with status ok
+>wait r5 f5 r6
+Proxy stderr: large_flag: 0, size: 10175
+Proxy stderr: left_size: 974659
+>check r5
+Request r5 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>respond r6
+Server responded to request r6 with status ok
+>wait r6 f6
+Proxy stderr: large_flag: 0, size: 12175
+Proxy stderr: left_size: 962484
+>check r6
+Request r6 yielded expected status 'ok'
+>check f6
+Request f6 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.44 seconds
+ALL TESTS PASSED

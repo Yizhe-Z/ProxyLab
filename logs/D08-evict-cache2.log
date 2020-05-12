@@ -1,0 +1,360 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:14048
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/D08-evict-cache2.cmd'
+># Make sure evict objects
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:8942
+>generate random-text01.txt 100K
+>generate random-text02.txt 100K
+>generate random-text03.txt 100K
+>generate random-text04.txt 100K
+>generate random-text05.txt 100K
+>generate random-text06.txt 100K
+>generate random-text07.txt 100K
+>generate random-text08.txt 100K
+>generate random-text09.txt 100K
+>generate random-text10.txt 100K
+>generate random-text11.txt 100K
+>generate random-text12.txt 100K
+>generate random-text13.txt 100K
+>generate random-text14.txt 100K
+>generate random-text15.txt 100K
+>fetch f01 random-text01.txt s1
+Client: Fetching '/random-text01.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f02 random-text02.txt s1
+Client: Fetching '/random-text02.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f03 random-text03.txt s1
+Client: Fetching '/random-text03.txt' from bambooshark.ics.cs.cmu.edu:8942
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text01.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f01
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text03.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f03
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text02.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f02
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 948398
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 848220
+Proxy stderr: left_size: 748042
+>check f01
+Request f01 yielded expected status 'ok'
+>check f02
+Request f02 yielded expected status 'ok'
+>check f03
+Request f03 yielded expected status 'ok'
+># Make sure have initial requests in cache
+>request r01c random-text01.txt s1
+Client: Requesting '/random-text01.txt' from bambooshark.ics.cs.cmu.edu:8942
+>request r02c random-text02.txt s1
+Client: Requesting '/random-text02.txt' from bambooshark.ics.cs.cmu.edu:8942
+>request r03c random-text03.txt s1
+Client: Requesting '/random-text03.txt' from bambooshark.ics.cs.cmu.edu:8942
+>wait *
+Proxy stderr: zyzyz: 1
+Proxy stderr: zyzyz: 1
+Proxy stderr: zyzyz: 1
+>check r01c
+Request r01c yielded expected status 'ok'
+>check r02c
+Request r02c yielded expected status 'ok'
+>check r03c
+Request r03c yielded expected status 'ok'
+># Generate more fetches, to eventually evict first three
+>fetch f04 random-text04.txt s1
+Client: Fetching '/random-text04.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f05 random-text05.txt s1
+Client: Fetching '/random-text05.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f06 random-text06.txt s1
+Client: Fetching '/random-text06.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f07 random-text07.txt s1
+Client: Fetching '/random-text07.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f08 random-text08.txt s1
+Client: Fetching '/random-text08.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f09 random-text09.txt s1
+Client: Fetching '/random-text09.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f10 random-text10.txt s1
+Client: Fetching '/random-text10.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f11 random-text11.txt s1
+Client: Fetching '/random-text11.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f12 random-text12.txt s1
+Client: Fetching '/random-text12.txt' from bambooshark.ics.cs.cmu.edu:8942
+>request r13 random-text13.txt s1
+Client: Requesting '/random-text13.txt' from bambooshark.ics.cs.cmu.edu:8942
+>request r14 random-text14.txt s1
+Client: Requesting '/random-text14.txt' from bambooshark.ics.cs.cmu.edu:8942
+>request r15 random-text15.txt s1
+Client: Requesting '/random-text15.txt' from bambooshark.ics.cs.cmu.edu:8942
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text04.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f04
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text06.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f06
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text05.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f05
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text08.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f08
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text07.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f07
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text09.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f09
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text11.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f11
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text12.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f12
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text10.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f10
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text13.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: r13
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text15.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: r15
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text14.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: r14
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 647864
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 547686
+Proxy stderr: left_size: 447508
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 347330
+Proxy stderr: large_flag: 0, size: 100179
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 247151
+Proxy stderr: left_size: 146973
+Proxy stderr: large_flag: 0, size: 100178
+Proxy stderr: left_size: 46795
+Proxy stderr: large_flag: 0, size: 100179
+Proxy stderr: left_size: 46794
+Proxy stderr: large_flag: 0, size: 100179
+Proxy stderr: left_size: 46793
+>check f04
+Request f04 yielded expected status 'ok'
+>check f05
+Request f05 yielded expected status 'ok'
+>check f06
+Request f06 yielded expected status 'ok'
+>check f07
+Request f07 yielded expected status 'ok'
+>check f08
+Request f08 yielded expected status 'ok'
+>check f09
+Request f09 yielded expected status 'ok'
+>check f10
+Request f10 yielded expected status 'ok'
+>check f11
+Request f11 yielded expected status 'ok'
+>check f12
+Request f12 yielded expected status 'ok'
+># Out of order response will cause sequential proxy to fail
+># These should cause initial objects to be evicted
+>respond r15 r14 r13
+Server responded to request r15 with status ok
+Server responded to request r14 with status ok
+Server responded to request r13 with status ok
+>wait *
+Proxy stderr: large_flag: 0, size: 100179
+Proxy stderr: large_flag: 0, size: 100179
+Proxy stderr: left_size: 46792
+Proxy stderr: left_size: 46791
+Proxy stderr: large_flag: 0, size: 100179
+Proxy stderr: left_size: 46790
+>check r13
+Request r13 yielded expected status 'ok'
+>check r14
+Request r14 yielded expected status 'ok'
+>check r15
+Request r15 yielded expected status 'ok'
+>delete random-text01.txt
+>delete random-text02.txt
+>delete random-text03.txt
+># These shouldn't be cached
+># Make sure initial requests have been evicted
+>fetch f01n random-text01.txt s1
+Client: Fetching '/random-text01.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f02n random-text02.txt s1
+Client: Fetching '/random-text02.txt' from bambooshark.ics.cs.cmu.edu:8942
+>fetch f03n random-text03.txt s1
+Client: Fetching '/random-text03.txt' from bambooshark.ics.cs.cmu.edu:8942
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text01.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f01n
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 343
+Proxy stderr: left_size: 46447
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text02.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f02n
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text03.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: Request-ID: f03n
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 343
+Proxy stderr: large_flag: 0, size: 343
+Proxy stderr: left_size: 46104
+>check f01n 404
+Request f01n yielded expected status 'not_found'
+>check f02n 404
+Request f02n yielded expected status 'not_found'
+>check f03n 404
+Request f03n yielded expected status 'not_found'
+># Make sure still have final requests in cache
+>request r13c random-text13.txt s1
+Client: Requesting '/random-text13.txt' from bambooshark.ics.cs.cmu.edu:8942
+>request r14c random-text14.txt s1
+Client: Requesting '/random-text14.txt' from bambooshark.ics.cs.cmu.edu:8942
+Proxy stderr: left_size: 45761
+>request r15c random-text15.txt s1
+Client: Requesting '/random-text15.txt' from bambooshark.ics.cs.cmu.edu:8942
+>wait *
+Proxy stderr: zyzyz: 1
+Proxy stderr: zyzyz: 1
+Proxy stderr: zyzyz: 1
+>check r13c
+Request r13c yielded expected status 'ok'
+>check r14c
+Request r14c yielded expected status 'ok'
+>check r15c
+Request r15c yielded expected status 'ok'
+>delete random-text04.txt
+>delete random-text05.txt
+>delete random-text06.txt
+>delete random-text07.txt
+>delete random-text08.txt
+>delete random-text09.txt
+>delete random-text10.txt
+>delete random-text11.txt
+>delete random-text12.txt
+>delete random-text13.txt
+>delete random-text14.txt
+>delete random-text15.txt
+>quit
+Testing done.  Elapsed time = 7.25 seconds
+ALL TESTS PASSED

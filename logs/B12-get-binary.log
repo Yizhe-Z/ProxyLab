@@ -1,0 +1,88 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:23444
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/B12-get-binary.cmd'
+># Test ability of proxy to get binary data from real web server
+># These data came from versions of the SCS and ECE home pages
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/radiocity.png
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/radiocity.png HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 1, size: 98304
+Both copies of URL match.  Result in ./get_files/get-001-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/radiocity.png
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/USflag.jpg
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/USflag.jpg HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 1, size: 98304
+Both copies of URL match.  Result in ./get_files/get-002-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/USflag.jpg
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-for-the-founders.png
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-for-the-founders.png HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 96592
+Proxy stderr: left_size: 951984
+Both copies of URL match.  Result in ./get_files/get-003-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-for-the-founders.png
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-cmu-ai.png
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-cmu-ai.png HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 89765
+Proxy stderr: left_size: 862219
+Both copies of URL match.  Result in ./get_files/get-004-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-cmu-ai.png
+># Nonexistent URLs.  Should yield status code 404
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.jpg
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.jpg HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.jpg
+Proxy stderr: large_flag: 0, size: 1853
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.png
+Proxy stderr: left_size: 860366
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.png HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.png
+>quit
+Proxy stderr: large_flag: 0, size: 1853
+Testing done.  Elapsed time = 7.54 seconds
+ALL TESTS PASSED

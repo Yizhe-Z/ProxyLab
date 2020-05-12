@@ -1,0 +1,115 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:6911
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/B11-get-text.cmd'
+># Test ability of proxy to get text data from actual web server
+># Replicas of home pages
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece.html
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece.html HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 24490
+Proxy stderr: left_size: 1024086
+Both copies of URL match.  Result in ./get_files/get-001-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece.html
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs.html
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs.html HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 55210
+Proxy stderr: left_size: 968876
+Both copies of URL match.  Result in ./get_files/get-002-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs.html
+># Objects referenced by these pages
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/bootstrap.css
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/bootstrap.css HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 99422
+Proxy stderr: left_size: 869454
+Both copies of URL match.  Result in ./get_files/get-003-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/bootstrap.css
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/widgets.js
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/widgets.js HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 1, size: 98304
+Both copies of URL match.  Result in ./get_files/get-004-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/widgets.js
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/analytics.js
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/analytics.js HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 36512
+Proxy stderr: left_size: 832942
+Both copies of URL match.  Result in ./get_files/get-005-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/analytics.js
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/font-awesome.css
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/font-awesome.css HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 21249
+Proxy stderr: left_size: 811693
+Both copies of URL match.  Result in ./get_files/get-006-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/font-awesome.css
+># Nonexistent URLs.  Should yield status code 404
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.css
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.css HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.css
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.js
+Proxy stderr: large_flag: 0, size: 1853
+Proxy stderr: left_size: 809840
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.js HTTP/1.0
+Proxy stderr: Accept-Encoding: identity
+Proxy stderr: Host: www.cs.cmu.edu
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.js
+>quit
+Testing done.  Elapsed time = 5.18 seconds
+ALL TESTS PASSED

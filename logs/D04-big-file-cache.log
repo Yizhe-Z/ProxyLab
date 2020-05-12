@@ -1,0 +1,84 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:8395
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/D04-big-file-cache.cmd'
+># Make sure don't cache large objects
+># This test can be passed by a sequential proxy
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:4403
+># This file is too big to cache
+>generate random-text1.txt 200K
+>generate random-text2.txt 20K
+>request r1a random-text1.txt s1
+Client: Requesting '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:4403
+>request r2a random-text2.txt s1
+Client: Requesting '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:4403
+># Respond in order
+>wait r1a
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:4403
+Proxy stderr: Request-ID: r1a
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:4403
+Proxy stderr: Request-ID: r2a
+Proxy stderr: Response: Deferred
+>respond r1a
+Server responded to request r1a with status ok
+>wait r2a
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r2a
+Server responded to request r2a with status ok
+>wait r1a r2a
+Proxy stderr: large_flag: 0, size: 20176
+Proxy stderr: left_size: 1028400
+Proxy stderr: large_flag: 1, size: 98304
+>check r1a
+Request r1a yielded expected status 'ok'
+>check r2a
+Request r2a yielded expected status 'ok'
+># Delete file so that future attempt to fetch it will fail
+>delete random-text1.txt
+># Should not serve from cache
+>request r1b random-text1.txt s1
+Client: Requesting '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:4403
+>wait r1b
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:4403
+Proxy stderr: Request-ID: r1b
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r1b
+Server responded to request r1b with status not_found (File 'random-text1.txt' not found)
+># Should serve from cache.
+>request r2b random-text2.txt s1
+Client: Requesting '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:4403
+>wait r1b r2b
+Proxy stderr: large_flag: 0, size: 339
+Proxy stderr: left_size: 1028061
+Proxy stderr: zyzyz: 1
+># Correct implementation will try to fetch deleted file and return status 404
+>check r1b 404
+Request r1b yielded expected status 'not_found'
+># Correct implementation will serve this file from its cache
+>check r2b
+Request r2b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 4.36 seconds
+ALL TESTS PASSED

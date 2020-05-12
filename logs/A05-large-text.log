@@ -1,0 +1,33 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:19940
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/A05-large-text.cmd'
+># Test ability to retrieve 1MB text file
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:16695
+>generate long-text.txt 1M
+>request r1 long-text.txt s1
+Client: Requesting '/long-text.txt' from bambooshark.ics.cs.cmu.edu:16695
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /long-text.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:16695
+Proxy stderr: Request-ID: r1
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+Proxy stderr: large_flag: 1, size: 98304
+>check r1
+Request r1 yielded expected status 'ok'
+>delete long-text.txt
+>quit
+Testing done.  Elapsed time = 3.55 seconds
+ALL TESTS PASSED

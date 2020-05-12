@@ -1,0 +1,76 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:14014
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/A01-single-fetch.cmd'
+># Test ability to fetch very small text file
+>serve s1                       # Set up server
+Server s1 running at bambooshark.ics.cs.cmu.edu:25837
+>generate random-text.txt 50    # Create file
+>fetch f1 random-text.txt s1    # Fetch it from server
+Client: Fetching '/random-text.txt' from bambooshark.ics.cs.cmu.edu:25837
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:25837
+Proxy stderr: Request-ID: f1
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 221
+Proxy stderr: left_size: 1048355
+>check f1                       # Make sure it's correct
+Request f1 yielded expected status 'ok'
+>trace f1                       # Run trace on transaction
+== Trace of request f1 =========================================================
+Initial request by client had header:
+GET http://bambooshark.ics.cs.cmu.edu:25837/random-text.txt HTTP/1.0\r\n
+Host: bambooshark.ics.cs.cmu.edu:25837\r\n
+Request-ID: f1\r\n
+Response: Immediate\r\n
+Connection: close\r\n
+Proxy-Connection: close \r\n
+User-Agent: CMU/1.0 Iguana/20180704 PxyDrive/0.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message received by server had header:
+GET /random-text.txt HTTP/1.0\r\n
+Host: bambooshark.ics.cs.cmu.edu:25837\r\n
+Request-ID: f1\r\n
+Response: Immediate\r\n
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1\r\n
+Connection: close\r\n
+Proxy-Connection: close\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message sent by server had header:
+HTTP/1.0 200 OK\r\n
+Server: Proxylab driver\r\n
+Request-ID: f1\r\n
+Content-length: 50\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s1-/random-text.txt\r\n
+Sequence-Identifier: 1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message received by client had header:
+HTTP/1.0 200 OK
+Server: Proxylab driver\r\n
+Request-ID: f1\r\n
+Content-length: 50\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s1-/random-text.txt\r\n
+Sequence-Identifier: 1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Response status: ok
+  Source file in ./source_files/random/random-text.txt
+Request status:  ok (OK)
+  Result file in ./response_files/f1-random-text.txt
+>quit                           # Exit program
+Testing done.  Elapsed time = 2.36 seconds
+ALL TESTS PASSED

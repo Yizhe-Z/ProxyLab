@@ -1,0 +1,53 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:19892
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/C01-basic-concurrency.cmd'
+># Test ability to handle out-of-order requests
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:23915
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>request r1 random-text1.txt s1
+Client: Requesting '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:23915
+>request r2 random-text2.txt s1
+Client: Requesting '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:23915
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:23915
+Proxy stderr: Request-ID: r1
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:23915
+Proxy stderr: Request-ID: r2
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+># Proxy must have passed request r2 to server
+># even though it has not yet completed r1.
+>respond r2
+Server responded to request r2 with status ok
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+Proxy stderr: large_flag: 0, size: 2174
+Proxy stderr: large_flag: 0, size: 4174
+Proxy stderr: left_size: 1044402
+Proxy stderr: left_size: 1042228
+>check r1
+Request r1 yielded expected status 'ok'
+>check r2
+Request r2 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.30 seconds
+ALL TESTS PASSED

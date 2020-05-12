@@ -1,0 +1,34 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:30746
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/A03-basic-binary.cmd'
+># Test ability to retrieve binary file
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:4906
+># This file will contain arbitrary byte values
+>generate random-binary.bin 10K
+>request r1 random-binary.bin s1
+Client: Requesting '/random-binary.bin' from bambooshark.ics.cs.cmu.edu:4906
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-binary.bin HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:4906
+Proxy stderr: Request-ID: r1
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+Proxy stderr: large_flag: 0, size: 10190
+Proxy stderr: left_size: 1038386
+>check r1
+Request r1 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.26 seconds
+ALL TESTS PASSED

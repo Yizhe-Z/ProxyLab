@@ -1,0 +1,112 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:6376
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/A08-multiple-fetch.cmd'
+># Test ability to handle multiple fetches
+>serve s1 s2 s3
+Server s1 running at bambooshark.ics.cs.cmu.edu:2864
+Server s2 running at bambooshark.ics.cs.cmu.edu:25146
+Server s3 running at bambooshark.ics.cs.cmu.edu:6063
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+>fetch f1 random-text1.txt s1
+Client: Fetching '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:2864
+>fetch f2 random-text2.txt s2
+Client: Fetching '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:25146
+>fetch f3 random-text3.txt s3
+Client: Fetching '/random-text3.txt' from bambooshark.ics.cs.cmu.edu:6063
+>fetch f4 random-text4.txt s3
+Client: Fetching '/random-text4.txt' from bambooshark.ics.cs.cmu.edu:6063
+>fetch f5 random-text5.txt s2
+Client: Fetching '/random-text5.txt' from bambooshark.ics.cs.cmu.edu:25146
+>fetch f6 random-text6.txt s1
+Client: Fetching '/random-text6.txt' from bambooshark.ics.cs.cmu.edu:2864
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:2864
+Proxy stderr: Request-ID: f1
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text3.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:6063
+Proxy stderr: Request-ID: f3
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:25146
+Proxy stderr: Request-ID: f2
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 2174
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text5.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:25146
+Proxy stderr: Request-ID: f5
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text4.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:6063
+Proxy stderr: Request-ID: f4
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: left_size: 1046402
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text6.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:2864
+Proxy stderr: Request-ID: f6
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 6174
+Proxy stderr: left_size: 1040228
+Proxy stderr: large_flag: 0, size: 4174
+Proxy stderr: left_size: 1036054
+Proxy stderr: large_flag: 0, size: 8174
+Proxy stderr: large_flag: 0, size: 10175
+Proxy stderr: left_size: 1027880
+Proxy stderr: left_size: 1017705
+Proxy stderr: large_flag: 0, size: 12175
+Proxy stderr: left_size: 1005530
+>check f1
+Request f1 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>check f3
+Request f3 yielded expected status 'ok'
+>check f4
+Request f4 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>check f6
+Request f6 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.47 seconds
+ALL TESTS PASSED

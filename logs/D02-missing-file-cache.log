@@ -1,0 +1,56 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:2157
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/D02-missing-file-cache.cmd'
+># Test ability to handle missing file from cache
+># This test can be passed by a sequential proxy
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:11021
+>request r1a random-text1.txt s1
+Client: Requesting '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:11021
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:11021
+Proxy stderr: Request-ID: r1a
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r1a
+Server responded to request r1a with status not_found (File 'random-text1.txt' not found)
+>wait *
+Proxy stderr: large_flag: 0, size: 339
+Proxy stderr: left_size: 1048237
+>check r1a 404
+Request r1a yielded expected status 'not_found'
+>fetch f2 random-text2.txt s1
+Client: Fetching '/random-text2.txt' from bambooshark.ics.cs.cmu.edu:11021
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-text2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:11021
+Proxy stderr: Request-ID: f2
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 338
+Proxy stderr: left_size: 1047899
+>check f2 404
+Request f2 yielded expected status 'not_found'
+># Proxy should respond immediately with missing file notification
+>request r1b random-text1.txt s1
+Client: Requesting '/random-text1.txt' from bambooshark.ics.cs.cmu.edu:11021
+>wait *
+Proxy stderr: zyzyz: 1
+>check r1b 404
+Request r1b yielded expected status 'not_found'
+>quit
+Testing done.  Elapsed time = 2.33 seconds
+ALL TESTS PASSED

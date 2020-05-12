@@ -1,0 +1,59 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:23869
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/D03-basic-binary-cache.cmd'
+># Test ability to retrieve binary file from cache
+># This test can be passed by a sequential proxy
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:23942
+>generate random-binary1.bin 10K
+>generate random-binary2.bin 10K
+># Cache must be able to hold binary data
+>request r1a random-binary1.bin s1
+Client: Requesting '/random-binary1.bin' from bambooshark.ics.cs.cmu.edu:23942
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-binary1.bin HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:23942
+Proxy stderr: Request-ID: r1a
+Proxy stderr: Response: Deferred
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+>respond r1a
+Server responded to request r1a with status ok
+>wait *
+>check r1a
+Request r1a yielded expected status 'ok'
+>fetch f2 random-binary2.bin s1
+Client: Fetching '/random-binary2.bin' from bambooshark.ics.cs.cmu.edu:23942
+>wait *
+Proxy stderr: large_flag: 0, size: 10192
+Proxy stderr: left_size: 1038384
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /random-binary2.bin HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:23942
+Proxy stderr: Request-ID: f2
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 10191
+Proxy stderr: left_size: 1028193
+>check f2
+Request f2 yielded expected status 'ok'
+># This request should be serviced directly by proxy
+>request r1b random-binary1.bin s1
+Client: Requesting '/random-binary1.bin' from bambooshark.ics.cs.cmu.edu:23942
+>wait *
+Proxy stderr: zyzyz: 1
+>check r1b
+Request r1b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 3.10 seconds
+ALL TESTS PASSED

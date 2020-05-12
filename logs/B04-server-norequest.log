@@ -1,0 +1,67 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at bambooshark.ics.cs.cmu.edu:4927
+>option stretch 200
+>source '/afs/andrew.cmu.edu/usr3/yizhez/private/proxylab-s20-zhaoyizhe312/tests/B04-server-norequest.cmd'
+># Test what happens when server closes socket before reading request
+>generate r1.txt 1k
+>generate r2.txt 2k
+>serve s1
+Server s1 running at bambooshark.ics.cs.cmu.edu:30632
+>disrupt request s1
+>delay 100
+>fetch f1 r1.txt s1
+Client: Fetching '/r1.txt' from bambooshark.ics.cs.cmu.edu:30632
+>delay 100
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /r1.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:30632
+Proxy stderr: Request-ID: f1
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 0
+Proxy stderr: left_size: 1048576
+>fetch f2 r2.txt s1
+Client: Fetching '/r2.txt' from bambooshark.ics.cs.cmu.edu:30632
+>wait *
+Proxy stderr: zyzyz: -1
+Proxy stderr: GET /r2.txt HTTP/1.0
+Proxy stderr: Host: bambooshark.ics.cs.cmu.edu:30632
+Proxy stderr: Request-ID: f2
+Proxy stderr: Response: Immediate
+Proxy stderr: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1
+Proxy stderr: Connection: close
+Proxy stderr: Proxy-Connection: close
+Proxy stderr: 
+Proxy stderr: large_flag: 0, size: 2164
+Proxy stderr: left_size: 1046412
+># f1 failed, but f2 should be OK
+>trace f1
+== Trace of request f1 =========================================================
+Initial request by client had header:
+GET http://bambooshark.ics.cs.cmu.edu:30632/r1.txt HTTP/1.0\r\n
+Host: bambooshark.ics.cs.cmu.edu:30632\r\n
+Request-ID: f1\r\n
+Response: Immediate\r\n
+Connection: close\r\n
+Proxy-Connection: close \r\n
+User-Agent: CMU/1.0 Iguana/20180704 PxyDrive/0.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Request NOT received by server
+--------------------------------------------------------------------------------
+Reponse NOT sent by server
+--------------------------------------------------------------------------------
+Response NOT received by client
+--------------------------------------------------------------------------------
+Request status:  error (Got empty response for URL request http://bambooshark.ics.cs.cmu.edu:30632/r1.txt)
+>check f2
+Request f2 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.69 seconds
+ALL TESTS PASSED
